@@ -17,9 +17,16 @@ al original.
 # En el repo original de Winnie eran relativos: from .algorithm.scenario1 ...
 # porque menu.py vivia dentro del paquete fraud_detector_program/.
 # En grafofraude-app, menu.py esta en la raiz, asi que se importa directamente.
+import os
+
 from algorithm.scenario1 import ejecutar_escenario_1
 from algorithm.scenario2 import ejecutar_escenario_2
 from algorithm.scenario3 import ejecutar_escenario_3
+
+# Carpeta donde los 3 escenarios guardan sus PNG/HTML generados.
+# Se crea una sola vez al iniciar el menú.
+# os.makedirs() dentro de cada scenarioN.py por separado.
+CARPETA_OUTPUTS = "/home/GrafoFraude/grafofraude-app/outputs"
 
 def menu():
     """Muestra el menu principal en consola y ejecuta el escenario elegido.
@@ -28,6 +35,8 @@ def menu():
     Cada escenario esta envuelto en try/except para que un error interno
     no tumbe el programa completo — el usuario puede seguir eligiendo opciones.
     """
+    os.makedirs(CARPETA_OUTPUTS, exist_ok=True)
+
     while True:
         print("\n" + "=" * 70)
         print(" SISTEMA DE DETECCION DE FRAUDE - MENU PRINCIPAL")
@@ -48,6 +57,7 @@ def menu():
                 # Si algo falla (ej. CSV no encontrado, columna faltante),
                 # se imprime el error y el menu vuelve a aparecer.
                 print(f"\n Error en Escenario 1: {e}")
+            input("\nPresiona ENTER para volver al menú principal...")
 
         elif opcion == "2":
             try:
@@ -56,6 +66,7 @@ def menu():
                 ejecutar_escenario_2()
             except Exception as e:
                 print(f"\n Error en Escenario 2: {e}")
+            input("\nPresiona ENTER para volver al menú principal...")
 
         elif opcion == "3":
             try:
@@ -64,6 +75,7 @@ def menu():
                 ejecutar_escenario_3()
             except Exception as e:
                 print(f"\n Error en Escenario 3: {e}")
+            input("\nPresiona ENTER para volver al menú principal...")
 
         elif opcion == "0":
             print("Saliendo del sistema...")

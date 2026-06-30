@@ -1,0 +1,24 @@
+Esta carpeta es solo informativa.
+
+El proyecto genera automáticamente, en tiempo real, una carpeta llamada
+"outputs/" en la raíz del repositorio (que NO se versiona en git, ver
+.gitignore). 
+
+Ahí se guardan los resultados visuales de cada escenario:
+
+  - grafo_escenario1_<timestamp>.png
+  - heatmap_escenario1_<timestamp>.png
+  - heatmap_interactivo_<timestamp>.html
+  - riesgo_escenario2_<timestamp>.png
+  - comunidades_escenario3_<timestamp>.png
+
+Cada ejecución genera archivos nuevos (con fecha y hora en el nombre),
+sin sobrescribir las versiones anteriores.
+
+No es necesario crear la carpeta "outputs/" manualmente: el programa
+la crea sola la primera vez que se ejecuta un escenario, siempre que
+exista la ruta configurada en cada algorithm/scenarioN.py, donde N es el numero de escenarios que hay {1,2,3}
+
+Si estás corriendo el proyecto localmente en tu computador, revisa que
+las rutas RUTA_TRANSACTION, RUTA_IDENTITY y la carpeta de salida en
+cada scenarioN.py apunten a tu propia estructura de carpetas.

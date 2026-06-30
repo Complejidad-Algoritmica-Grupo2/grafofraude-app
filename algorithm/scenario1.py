@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 from collections import deque
+from datetime import datetime
+import os
 
 # ---------------------------------------------------------------------------
 # CONFIGURACIÓN
@@ -25,8 +27,8 @@ from collections import deque
 # ---------------------------------------------------------------------------
 # Rutas donde el programa espera encontrar los CSV del dataset IEEE-CIS.
 # Son rutas relativas a la carpeta desde la que se ejecuta el programa.
-RUTA_TRANSACTION = "fraud_detector_program/data/train_transaction.csv"
-RUTA_IDENTITY = "fraud_detector_program/data/train_identity.csv"
+RUTA_TRANSACTION = "/home/GrafoFraude/grafofraude-app/data/train_transaction.csv"
+RUTA_IDENTITY = "/home/GrafoFraude/grafofraude-app/data/train_identity.csv"
 
 # Umbral de "sospecha": un dispositivo conectado a 5 o más cuentas
 # distintas se considera anómalo (ver sección 2.1.1 del informe TF).
@@ -269,6 +271,8 @@ def dibujar_grafo_visual(G: nx.Graph, umbral: int, guardar_como: str = None):
     if guardar_como:
         plt.savefig(guardar_como, dpi=150, bbox_inches="tight")
         print(f"\nGrafo visual guardado en: {guardar_como}")
+        nombre_archivo = os.path.basename(guardar_como)
+        print(f"Ver en navegador: http://34.176.129.139:8080/{nombre_archivo}")
     else:
         plt.show()
 
@@ -316,6 +320,8 @@ def dibujar_heatmap_actividad(df: pd.DataFrame, top_n: int = 15,
     if guardar_como:
         plt.savefig(guardar_como, dpi=150, bbox_inches="tight")
         print(f"\nHeatmap guardado en: {guardar_como}")
+        nombre_archivo = os.path.basename(guardar_como)
+        print(f"Ver en navegador: http://34.176.129.139:8080/{nombre_archivo}")
     else:
         plt.show()
 
@@ -357,6 +363,8 @@ def dibujar_heatmap_interactivo(df: pd.DataFrame, n_bins: int = 20,
 
     fig.write_html(guardar_como)
     print(f"\nHeatmap interactivo guardado en: {guardar_como} (ábrelo en tu navegador)")
+    nombre_archivo = os.path.basename(guardar_como)
+    print(f"Ver en navegador: http://34.176.129.139:8080/{nombre_archivo}")
 
 
 # ---------------------------------------------------------------------------
@@ -483,11 +491,15 @@ def ejecutar_escenario_1():
 
     generar_conclusiones(G, componentes)
 
+    # Generamos la fecha y hora exacta y dicho valor lo guardamos en una variable llamada timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Definimos la variable llamada "carpeta" y le damos la carpeta respectiva, el nombre de la variable puede ser modificada
+    carpeta = "/home/GrafoFraude/grafofraude-app/outputs"
     print("\nGenerando visualización gráfica de dispositivos sospechosos...")
-    dibujar_grafo_visual(G, UMBRAL_CUENTAS_SOSPECHOSAS, guardar_como="grafo_escenario1.png")
+    dibujar_grafo_visual(G, UMBRAL_CUENTAS_SOSPECHOSAS, guardar_como=f"{carpeta}/grafo_escenario1_{timestamp}.png")
 
     print("\nGenerando heatmap de actividad por dispositivo y tiempo...")
-    dibujar_heatmap_actividad(df, guardar_como="heatmap_escenario1.png")
+    dibujar_heatmap_actividad(df, guardar_como=f"{carpeta}/heatmap_escenario1_{timestamp}.png")
 
     print("\nGenerando heatmap interactivo (todos los dispositivos)...")
-    dibujar_heatmap_interactivo(df, guardar_como="heatmap_interactivo.html")
+    dibujar_heatmap_interactivo(df, guardar_como=f"{carpeta}/heatmap_interactivo_{timestamp}.html")

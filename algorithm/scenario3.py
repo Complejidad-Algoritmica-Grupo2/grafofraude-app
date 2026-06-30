@@ -24,14 +24,16 @@ import matplotlib.pyplot as plt
 # instalar python-louvain ni community por separado. Solo necesitas
 # que networkx esté actualizado (ya está en requirements.txt).
 from networkx.algorithms.community import louvain_communities
+from datetime import datetime
+import os
 
 # ---------------------------------------------------------------------------
 # CONFIGURACIÓN
 # - Definir las variables globales
 # ---------------------------------------------------------------------------
 # Rutas relativas al CSV (desde donde se ejecuta el programa).
-RUTA_TRANSACTION = "fraud_detector_program/data/train_transaction.csv"
-RUTA_IDENTITY = "fraud_detector_program/data/train_identity.csv"
+RUTA_TRANSACTION = "/home/GrafoFraude/grafofraude-app/data/train_transaction.csv"
+RUTA_IDENTITY = "/home/GrafoFraude/grafofraude-app/data/train_identity.csv"
 
 # Mismo tamaño de muestra que los otros dos escenarios para coherencia.
 N_REGISTROS = 1500
@@ -290,6 +292,8 @@ def dibujar_comunidades(G: nx.Graph, comunidades: list, guardar_como: str = None
     if guardar_como:
         plt.savefig(guardar_como, dpi=150, bbox_inches="tight")
         print(f"\nGráfico de comunidades guardado en: {guardar_como}")
+        nombre_archivo = os.path.basename(guardar_como)
+        print(f"Ver en navegador: http://34.176.129.139:8080/{nombre_archivo}")
     else:
         plt.show()
 
@@ -360,9 +364,10 @@ def ejecutar_escenario_3():
     comunidades = detectar_comunidades(G)
 
     generar_conclusiones(G, comunidades)
-
+    # Generar fecha y hora exacta y guardarla en una variable llamada timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     print("\nGenerando visualización de comunidades...")
-    dibujar_comunidades(G, comunidades, guardar_como="comunidades_escenario3.png")
+    dibujar_comunidades(G, comunidades, guardar_como=f"/home/GrafoFraude/grafofraude-app/outputs/comunidades_escenario3_{timestamp}.png")
 
 
 # Permite ejecutar este escenario directamente con:

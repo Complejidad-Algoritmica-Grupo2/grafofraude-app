@@ -4,4 +4,4 @@ matplotlib
 seaborn
 plotly
 python-louvain
- 
+scipy 

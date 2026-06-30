@@ -18,13 +18,14 @@ fines de comprensión/documentación (sin alterar el comportamiento).
 
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from datetime import datetime
+import os
 # ---------------------------------------------------------------------------
 # CONFIGURACIÓN
 # - Definición de variables globales
 # ---------------------------------------------------------------------------
 # Ruta relativa al CSV de transacciones (desde donde se ejecuta el programa).
-RUTA_TRANSACTION = "fraud_detector_program/data/train_transaction.csv"
+RUTA_TRANSACTION = "/home/GrafoFraude/grafofraude-app/data/train_transaction.csv"
 
 # Mismo tamaño de muestra que Escenario 1, para coherencia entre escenarios.
 N_REGISTROS = 1500
@@ -296,6 +297,8 @@ def graficar_tarjeta(df: pd.DataFrame, tarjeta: str, guardar_como: str = None):
     if guardar_como:
         plt.savefig(guardar_como, dpi=150, bbox_inches="tight")
         print(f"Gráfico guardado en: {guardar_como}")
+        nombre_archivo = os.path.basename(guardar_como)
+        print(f"Ver en navegador: http://34.176.129.139:8080/{nombre_archivo}")
     else:
         plt.show()
 
@@ -351,8 +354,10 @@ def ejecutar_escenario_2():
     if len(resumen) > 0:
         # Tomar la tarjeta con mayor riesgo (ya viene ordenado desc).
         tarjeta_top = resumen.iloc[0]["Tarjeta"]
+        # Extraemos la fecha y hora exacta y lo guardamos en una variable llamada "timestamp"
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         print(f"\nGenerando gráfico de la tarjeta con mayor riesgo: {tarjeta_top}...")
-        graficar_tarjeta(df, tarjeta_top, guardar_como="riesgo_escenario2.png")
+        graficar_tarjeta(df, tarjeta_top, guardar_como=f"/home/GrafoFraude/grafofraude-app/outputs/riesgo_escenario2_{timestamp}.png")
 
 
 # Permite ejecutar este escenario directamente con:

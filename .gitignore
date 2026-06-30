@@ -1,0 +1,12 @@
+# Dataset comprimidos y descomprimidos
+data/train_identity.csv
+data/train_transaction.csv
+data/train_identity.csv.zip
+data/train_transaction.csv.zip
+# Carpeta de Outputs en tiempo real
+outputs/
+# Carpeta oculta de kaggle (USO DE API para conectarnos a la data)
+.kaggle/
+# Carpetas y Archivos caché de bytecode compilado específico de la versión de Python
+__pycache__/
+*.pyc
